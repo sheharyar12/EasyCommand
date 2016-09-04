@@ -1,12 +1,12 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 
 public class command {
-	
 
-	
 	public command()
 	{
 		System.out.println("Executing Command");
@@ -29,6 +29,8 @@ public class command {
 		return output.toString();
 
 	}
+	
+	
 	
 	public String shutoffComputer() throws IOException, InterruptedException{
 		String output = this.executeCommand("shutdown -i");
@@ -82,8 +84,29 @@ public class command {
 		return output;
 	}
 	
-	public String changePassoword(String name) throws IOException, InterruptedException{
-		String output = this.executeCommand("net user " + name + " *");
-		return output;
+	
+	public void changeDate(String date) throws IOException, InterruptedException{
+		//String output = this.executeCommand("net user " + name + " *");
+		String command = "cmd /c date";
+		 
+		try {
+		    Process process = Runtime.getRuntime().exec(command);
+		 
+		    BufferedWriter writer = new BufferedWriter(
+		            new OutputStreamWriter(process.getOutputStream()));
+		    writer.write(date);
+		    writer.close();
+		 
+		    BufferedReader reader = new BufferedReader(new InputStreamReader(
+		            process.getInputStream()));
+		    String line;
+		    while ((line = reader.readLine()) != null) {
+		        System.out.println(line);
+		    }
+		    reader.close();
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
 	}
+	
 }
